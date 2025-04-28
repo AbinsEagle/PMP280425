@@ -3,34 +3,27 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [name, setName]               = useState('');
+  const [name, setName] = useState('');
   const [numQuestions, setNumQuestions] = useState(5);
-  const [estimated, setEstimated]     = useState(0);
+  const [estimated, setEstimated] = useState(0);
+  const [questionSource, setQuestionSource] = useState('inbuilt'); // Default to inbuilt questions
 
   useEffect(() => {
-    // 1.2 minutes per question
     setEstimated((numQuestions * 1.2).toFixed(1));
   }, [numQuestions]);
 
   const handleStart = () => {
     navigate('/questions', {
-      state: { 
+      state: {
         userName: name,
-        totalQuestions: numQuestions 
-      }
+        totalQuestions: numQuestions,
+        questionSource, // Pass the selected source
+      },
     });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100 relative">
-      {/* Background Image Positioned in the Left Corner */}
-      <img
-        src="/frontend/undraw_work-time_zbsw.svg" // Path to your SVG file
-        alt="Background Art"
-        className="absolute top-0 left-0 w-1/3 h-auto opacity-50"
-      />
-
-      {/* Main Content */}
       <div className="bg-white bg-opacity-30 p-8 rounded-xl shadow-xl shadow-gray-500/50 w-full max-w-xl z-10">
         <h1 className="text-2xl font-bold mb-2 text-center text-blue-600">
           PMP Exam Practice
@@ -57,6 +50,26 @@ export default function LoginPage() {
           onChange={(e) => setNumQuestions(Number(e.target.value))}
         />
 
+        <label className="block text-gray-700 mb-2">Question Source</label>
+        <div className="flex items-center gap-4 mb-6">
+          <button
+            onClick={() => setQuestionSource('inbuilt')}
+            className={`px-4 py-2 rounded-lg ${
+              questionSource === 'inbuilt' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
+          >
+            Inbuilt Questions
+          </button>
+          <button
+            onClick={() => setQuestionSource('pmp-genie')}
+            className={`px-4 py-2 rounded-lg ${
+              questionSource === 'pmp-genie' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
+          >
+            PMP Genie (GPT API)
+          </button>
+        </div>
+
         <p className="text-gray-600 mb-6">
           You should complete this session in about&nbsp;
           <span className="font-bold text-blue-600">{estimated} minutes</span>
@@ -68,8 +81,8 @@ export default function LoginPage() {
           onClick={handleStart}
           className={`w-full py-3 rounded-xl text-white font-bold ${
             !name.trim()
-              ? "bg-green-400 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
+              ? 'bg-green-400 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600'
           }`}
         >
           Start Exam
