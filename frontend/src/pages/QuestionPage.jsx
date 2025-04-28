@@ -98,6 +98,11 @@ export default function QuestionPage() {
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="bg-white rounded-2xl shadow-xl max-w-3xl mx-auto p-8">
 
+        {/* PMP Exam Coach Heading */}
+        <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          PMP Exam Coach
+        </h1>
+
         {/* top timers */}
         <div className="flex justify-between mb-6 text-sm text-gray-700">
           <div>
@@ -124,9 +129,9 @@ export default function QuestionPage() {
           </div>
         </div>
 
-        {/* question & options */}
+        {/* Question & Options */}
         <h2 className="text-xl font-semibold mb-2">
-          Question {currentIndex+1} of {questions.length}
+          Question {currentIndex + 1} of {questions.length}
         </h2>
         <p className="mb-4 text-gray-800">{questions[currentIndex].question}</p>
 
@@ -137,7 +142,7 @@ export default function QuestionPage() {
                 type="radio"
                 name="opt"
                 className="mr-2"
-                checked={selectedOption===opt}
+                checked={selectedOption === opt}
                 onChange={() => setSelectedOption(opt)}
               />
               {opt}
@@ -145,6 +150,19 @@ export default function QuestionPage() {
           ))}
         </div>
 
+        {/* Show Correct Answer and Rationale if the question is answered */}
+        {selectedOption && (
+          <div className="bg-gray-100 p-4 rounded-lg mb-6">
+            <p className="text-sm text-gray-800">
+              <span className="font-bold">Correct Answer:</span> {questions[currentIndex].correct}
+            </p>
+            <p className="text-sm text-gray-800 mt-2">
+              <span className="font-bold">Rationale:</span> This is where you can explain why the correct answer is correct. Replace this text with the actual rationale.
+            </p>
+          </div>
+        )}
+
+        {/* Next/Finish Button */}
         <button
           onClick={handleNext}
           disabled={!selectedOption}
@@ -152,24 +170,24 @@ export default function QuestionPage() {
             !selectedOption ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
           }`}
         >
-          {currentIndex+1===questions.length ? "Finish" : "Next"}
+          {currentIndex + 1 === questions.length ? "Finish" : "Next"}
         </button>
       </div>
 
       {/* bar chart log */}
-      {questionLog.length>0 && (
+      {questionLog.length > 0 && (
         <div className="mt-8 max-w-3xl mx-auto bg-white p-4 rounded-xl shadow">
           <h3 className="font-bold mb-2">Question Log</h3>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={questionLog}>
-              <CartesianGrid strokeDasharray="3 3"/>
-              <XAxis dataKey="question"/>
-              <YAxis/>
-              <Tooltip/>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="question" />
+              <YAxis />
+              <Tooltip />
               <Bar dataKey="time">
-                {questionLog.map((e,i)=>
+                {questionLog.map((e, i) => (
                   <Cell key={i} fill={e.correct ? "#10B981" : "#EF4444"} />
-                )}
+                ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
