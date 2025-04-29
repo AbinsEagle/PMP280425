@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Cell
+  Tooltip, ResponsiveContainer, Cell, LabelList
 } from "recharts";
 
 export default function QuestionPage() {
@@ -260,6 +260,13 @@ export default function QuestionPage() {
                 {questionLog.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.correct ? "#4CAF50" : "#F44336"} />
                 ))}
+                {/* Add labels to each bar */}
+                <LabelList
+                  dataKey="time"
+                  position="top"
+                  formatter={(value) => `${Math.floor(value / 60)}m ${value % 60}s`}
+                  style={{ fontSize: 12, fill: "#333" }}
+                />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
