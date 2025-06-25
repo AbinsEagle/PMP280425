@@ -9,6 +9,7 @@ export default function QuestionPageGPT() {
 
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -18,8 +19,10 @@ export default function QuestionPageGPT() {
       try {
         const qs = await fetchQuestionsFromPMPGenie(totalQuestions);
         setQuestions(qs.slice(0, totalQuestions));
+        setError('');
       } catch (err) {
         console.error('Failed to load questions from PMP Genie:', err);
+        setError(err.message || 'Failed to fetch questions. Please try again.');
         setQuestions([]);
       } finally {
         setLoading(false);
@@ -37,7 +40,7 @@ export default function QuestionPageGPT() {
   if (!questions.length) {
     return (
       <div className="flex items-center justify-center min-h-screen text-red-600">
-        Failed to load questions.
+        {error || 'Failed to load questions.'}
       </div>
     );
   }
