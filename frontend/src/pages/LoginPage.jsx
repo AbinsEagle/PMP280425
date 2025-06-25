@@ -13,11 +13,12 @@ export default function LoginPage() {
   }, [numQuestions]);
 
   const handleStart = () => {
-    navigate('/questions', {
+    const path = questionSource === 'pmp-genie' ? '/questions-gpt' : '/questions';
+    navigate(path, {
       state: {
         userName: name,
         totalQuestions: numQuestions,
-        questionSource, // Pass the selected source
+        questionSource,
       },
     });
   };
